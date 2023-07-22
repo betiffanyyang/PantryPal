@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PantryPal</title>
+    <style>
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #cdcdcd;
+        }
+        .navbar {
+            background-color: #cdcdcd;
+            overflow: hidden;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .navbar a {
+            display: block;
+            color: black; 
+            text-align: center;
+            padding: 30px 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            color: #834800; 
+        }
+        .navbar .logo {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .navbar .nav-links {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .image-wrapper {
+            background-color: #ba6600;
+            height: 600px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 500px;
+            opacity: 0.5;
+        }
+        #myImage {
+            position: absolute;
+            left: 100px;
+            width: 400px;  
+            height: auto; 
+        }
+        #myBox {
+            position: absolute;
+            right: 50px;
+            width: calc(100% - 800px);
+            height: 300px; 
+            padding: 40px; 
+            border-radius: 20px;
+            background-color:#C28F52;
+            opacity: 1;
+        }
+        #myBox p {
+            line-height: 2.2; /* adjust as needed */
+            color: black;
+            opacity: 1;
+        }
+        #myImage2 {
+            position: absolute;
+            right: 100px;
+            width: 400px;  
+            height: auto; 
+            margin-top: 1300px;
+        }
+        #myBox2 {
+            position: absolute;
+            left: 50px;
+            width: calc(100% - 800px);
+            height: 300px; 
+            padding: 40px; 
+            border-radius: 20px;
+            background-color:#C28F52;
+            opacity: 1;
+            margin-top: 1450px;
+        }
+        #myBox2 p {
+            line-height: 2.2;
+            color: black;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        #logo {
+            height: 100px; 
+            width: auto; 
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="Home.html">Home</a>
+            <a href="About.html">About</a>
+            <a href="Recipes.html">Recipes</a>
+        </div>
+        <div class="logo">
+            <img id="logo" src="PastryPal__1_-removebg-preview.png" alt="Logo">
+        </div>
+    </div>
+    <img id="myImage" src="PantryPal2.png" alt="Your Image">
+    <div id="myBox">
+        <h1>What is PantryPal?</h1>
+        <p>PantryPal is a dynamic website featuring an interactive chatbot that transforms your kitchen experience. Users simply input the ingredients they have on hand, and the chatbot generates a delicious, custom recipe using those ingredients. But it doesn't stop there - PantryPal also provides a step-by-step manual, complete with AI-generated images for visual aid, making the cooking process more accessible and enjoyable. The goal of PantryPal is not just to make cooking easy, but also to make healthy eating more affordable. By maximizing the use of what you already have in your pantry, we aim to reduce waste, save money, and promote a sustainable lifestyle.</p>
+    </div>
+    <img id="myImage2" src="PantryPal4.png" alt="Your Image">
+    <div id="myBox2">
+        <h1>Inspiration</h1>
+        <p>PantryPal was born out of the recognition of the high cost of living in Vancouver, coupled with the desire to promote healthy eating and mindful consumption. Many residents are struggling to balance the need for nutritious meals with the financial constraints of city living. I also recognized the importance of sustainability in our consumption habits, particularly in the kitchen. Therefore, PantryPal was created to help users make the most of the ingredients they already have, encouraging them to buy only what they need and still create delicious dishes. The goal was to make healthy, sustainable cooking accessible and enjoyable, regardless of one's budget.</p>
+    </div>
+</body>
+</html>

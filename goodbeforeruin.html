@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PantryPal</title>
+    <style>
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #cdcdcd;
+        }
+        .navbar {
+            background-color: #cdcdcd;
+            overflow: hidden;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .navbar a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 30px 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            color: #834800;
+        }
+        .navbar .logo {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .navbar .nav-links {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .boxes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            padding-left: 20px; /* Adjusted padding-left */
+            margin-top: 100px;
+        }
+        .box {
+            width: 500px;
+            height: 500px;
+            background-color: #ba6600;
+            opacity: 0.7;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+        }
+        .box-content {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 10px;
+            padding: 8px; /* Adjusted padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .box-text {
+            max-height: 100%; /* Adjusted max-height */
+            overflow-y: auto;
+            overflow-x: hidden; /* Added overflow-x */
+            padding: 8px; /* Added padding */
+            word-wrap: break-word; /* Added word-wrap */
+        }
+        .box-text::-webkit-scrollbar {
+            width: 5px; /* Adjusted scrollbar width */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="Home.html">Home</a>
+            <a href="About.html">About</a>
+            <a href="Recipes.html">Recipes</a>
+        </div>
+    </div>
+    
+    <div class="boxes-container" id="boxes"></div>
+
+    <script>
+        window.onload = function() {
+            const boxesDiv = document.getElementById('boxes');
+
+            for (let i = 0; i < 4; i++) {
+                const boxContent = localStorage.getItem(`box${i}`);
+                if (boxContent) {
+                    boxesDiv.innerHTML += `
+                        <div class="box">
+                            <div class="box-content">
+                                <div class="box-text">${boxContent}</div>
+                            </div>
+                        </div>`;
+                }
+            }
+        };
+    </script>
+
+</body>
+</html>

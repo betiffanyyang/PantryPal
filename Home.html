@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PantryPal</title>
+    <style>
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #cdcdcd;
+        }
+        .navbar {
+            background-color: #cdcdcd;
+            overflow: hidden;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .navbar a {
+            display: block;
+            color: black; /* Change the color to black */
+            text-align: center;
+            padding: 30px 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            color: #834800; /* Change the hover color to dark orange */
+        }
+        .navbar .logo {
+            flex-grow: 1;
+            text-align: center;
+            display: fixed;
+        }
+        .navbar .nav-links {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .chatbox {
+            position: absolute;
+            width: 90%;
+            max-width: 1000px;
+            height: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            top: 1500px;
+            opacity: 0.9;
+        }
+        .messages {
+            overflow: auto;
+            margin-bottom: 10px; /* Add a margin to the bottom */
+        }
+        /* Custom scrollbar styles */
+        .messages::-webkit-scrollbar {
+            width: 5px;
+        }
+        .messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .messages::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: #ba6600;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            border: 1px solid #ccc;
+        }
+        .user-message {
+            text-align: right;
+            background-color: #ddd;
+            padding: 10px;
+            width: fit-content;
+            max-width: 80%;
+            white-space: pre-wrap; /* Preserve white space and wrap long text */
+            word-break: break-word; /* Break long words */
+            margin-left: auto; /* Move the user messages to the right */
+            margin-right: 15px; /* Start messages 15px away from the right side */
+            opacity: 0.7;
+            border-radius: 10px;
+            margin-bottom: 10px; /* Add a margin to the bottom of each message */
+        }
+
+        .red-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            width: 80%;
+            max-width: 4300px;
+            height: 700px;
+            border-radius: 10px;
+            overflow-y: auto;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+        }
+
+        .box-content {
+            flex: 1;
+            padding-left: 50px; /* Move the text and button 50px away from the left side */
+            padding-right: 50px; /* Move the text and button 50px away from the right side */
+        }
+
+        .box-text {
+            color: black;
+            padding-bottom: 20px; /* Add space between text and button */
+        }
+
+        .box-text h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .box-text p {
+            font-size: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 20px 30px;
+            border-radius: 20px; /* Add rounded corners to the button */
+            background-color: #ba6600;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .box-image {
+            max-width: 1000px;
+            height: 700px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .boxes-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1600px; /* Move the boxes 100px down */
+            left: 0;
+            right: 0;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .box {
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            display: fixed;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 140px;
+        }
+
+        .other-box-image {
+            width: 250px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .box-text {
+            text-align: center;
+        }
+
+        .box-text-other {
+            text-align: left;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #888; /* Set the background color to grey */
+            color: white; /* Set the text color to white */
+            padding: 10px; /* Add padding to the bubble */
+            border-radius: 10px; /* Round the corners of the bubble */
+            width: fit-content; /* Adjust the width based on the content */
+            max-width: 80%; /* Set maximum width to 80% of the chatbox width */
+            white-space: pre-wrap; /* Preserve white space and wrap long text */
+            word-break: break-word; /* Break long words */
+            margin-right: auto; /* Move the bot messages to the left */
+            margin-left: 15px; /* Start messages 15px away from the left side */
+            opacity: 0.7;
+        }
+
+        .typing-animation {
+            margin-right: auto;
+            margin-left: 15px;
+            padding: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ba6600;
+            animation: typing 1s steps(5, end) infinite;
+        }
+
+        @keyframes typing {
+            0% { background-color: #888; }
+            50% { background-color: #fff; }
+            100% { background-color: #888; }
+        }
+
+        .empty-box-gallery {
+            display: flex;
+            justify-content: center;
+            margin-top: 1600px;
+            max-height: 1000px;
+            flex-wrap: wrap;
+        }
+
+        .empty-box {
+            width: 400px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 0 10px;
+            margin-bottom: 140px;
+            height: 400px; /* Set the height limit */
+            overflow-y: auto; /* Add a scroll feature */
+        }
+
+        .box-text-container {
+            display: flex;
+            flex-direction: column;
+            max-height: 400px; /* Set maximum height to 400px */
+            overflow-y: auto; /* Enable scrolling for excess text */
+        }
+
+        .viewRecipeButton {
+            display: none;
+            padding: 10px 10px;
+            background-color: #ba6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            position: right;
+        }
+
+        .box-image-food {
+            max-width: 300px;
+            max-height: 300px;
+            height: auto;
+        }
+
+        .chatbox-wrapper {
+        background-color: #ba6600;
+        height: 600px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2350px;
+        opacity: 0.5;
+    }
+
+    #logo {
+            height: 100px; 
+            width: auto; 
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="Home.html">Home</a>
+            <a href="About.html">About</a>
+            <a href="Recipes.html">Recipes</a>
+        </div>
+        <div class="logo">
+            <img id="logo" src="PastryPal__1_-removebg-preview.png" alt="Logo">
+        </div>
+    </div>
+
+    <div class="red-box">
+        <div class="box-content">
+            <div class="box-text-other">
+                <!-- Text inside the box -->
+                <h2>Welcome to PantryPal</h2>
+                <p>Generate recipes based on the ingredients you already have in your fridge, turning your kitchen into a creative and efficient cooking space</p>
+                <p>Promotes healthier eating, reduces food waste, and saves money</p>
+                <p>As a tool that encourages sustainability and mindful consumption, PantryPal represents the future of eco-friendly home cooking</p>
+            </div>
+            <a class="button" href="#chatbox">Go to Chat</a>
+        </div>
+        <img class="box-image" src="healthy food 3.jpg" alt="Image on the right">
+    </div>
+    <div class="boxes-container">
+        <div class="box">
+            <img class="other-box-image" src="6-removebg-preview.png" alt="Image 1">
+            <div class="box-text">
+                <h3>Save Money</h3>
+                <p>Save money by maximizing the use of ingredients you already have</p>
+            </div>
+        </div>
+        <div class="box">
+            <img class="other-box-image" src="5-removebg-preview.png" alt="Image 2">
+            <div class="box-text">
+                <h3>Sustainability</h3>
+                <p>Promotes sustainability by helping you utilize all your available ingredients, thereby minimizing food waste</p>
+            </div>
+        </div>
+        <div class="box">
+            <img class="other-box-image" src="4-removebg-preview.png" alt="Image 3">
+            <div class="box-text">
+                <h3>Health</h3>
+                <p>Encourages healthier eating habits as you can control and know exactly what goes into your meals.</p>
+            </div>
+        </div>
+        <div class="box">
+            <img class="other-box-image" src="Untitled_design__1_-removebg-preview.png" alt="Image 4">
+            <div class="box-text">
+                <h3>PantryPal</h3>
+                <p>Creating delicious recipes from ingredients already in your fridge</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbox-wrapper">
+        <div class="chatbox" id="chatbox">
+            <div class="messages" id="messages">
+                <!-- Chat messages will appear here -->
+            </div>
+            <input type="text" class="input-field" id="userInput" placeholder="What recipes can I make with..." onkeydown="handleKeyPress(event)">
+        </div>
+
+        <div class="empty-box-gallery">
+            <div class="empty-box" id="savebox1">
+                <div class="box-content"></div>
+                <a href="Recipes.html"><button class="viewRecipeButton">View Recipe</button></a>
+            </div>
+            <div class="empty-box" id="savebox2">
+                <div class="box-content"></div>
+                <a href="Recipes.html"><button class="viewRecipeButton">View Recipe</button></a>
+            </div>
+            <div class="empty-box" id="savebox3">
+                <div class="box-content"></div>
+                <a href="Recipes.html"><button class="viewRecipeButton">View Recipe</button></a>
+            </div>
+            <div class="empty-box" id="savebox4">
+                <div class="box-content"></div>
+                <a href="Recipes.html"><button class="viewRecipeButton">View Recipe</button></a>
+            </div>
+            <div id="recipe-container"></div>
+        </div>
+    </div>
+    
+    <script>
+
+        let i=0;
+
+        var savebox1 = document.getElementById('savebox1');
+        var savebox2 = document.getElementById('savebox2');
+        var savebox3 = document.getElementById('savebox3');
+        var savebox4 = document.getElementById('savebox4');
+        const arraySavebox=[savebox1, savebox2, savebox3, savebox4]
+
+        function setChatboxWidth() {
+            const chatbox = document.querySelector('.chatbox');
+            const screenWidth = window.innerWidth;
+            const chatboxWidth = screenWidth * 0.8; // Set width to 80% of the screen width
+            chatbox.style.width = `${chatboxWidth}px`;
+        }
+
+        window.addEventListener('DOMContentLoaded', setChatboxWidth);
+        window.addEventListener('resize', setChatboxWidth);
+
+        function checkForText() {
+            const boxes = ['savebox1', 'savebox2', 'savebox3', 'savebox4'];
+            boxes.forEach(boxId => {
+                const box = document.getElementById(boxId);
+                const content = box.querySelector('.box-content');
+                const button = box.querySelector('.viewRecipeButton');
+                if (content.innerHTML.trim() !== '') {
+                    button.style.display = 'block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+        }
+
+        async function handleKeyPress(event) {
+            if (event.keyCode === 13) {
+                const userInput = document.getElementById('userInput');
+                const message = userInput.value.trim();
+
+                if (message !== '') {
+                    sendUserMessage(message); // Send user message to chat log
+                    userInput.value = '';
+                    userInput.focus();
+
+                    // Get response from ChatGPT API
+                    const response = await getGptResponse(message);
+                    if (message.toLowerCase().includes("whats 9+5")) {
+                        sendBotMessage(response);
+                    } else {
+                        sendBotMessage(response);
+                        //Separating instructions into steps and putting them in an array
+                        const startInstructionsIndex = response.indexOf("Instructions:");
+                        const endInstructionsIndex = response.indexOf("\n\n", startInstructionsIndex);
+                        const instructionsPart = response.slice(startInstructionsIndex, endInstructionsIndex);
+                        const instructionsArray = instructionsPart.split(/\d+\.\s/).filter(step => step.trim() !== '');
+                        
+                        const recipe_name = response.split("Ingredients:");
+
+                        const dalleResponse = await dalle(recipe_name[0]);
+                        console.log(dalleResponse); // Log the response from the dalle function
+                        
+                        if (dalleResponse && dalleResponse.data && dalleResponse.data.length > 0) {
+                            const imageurl = dalleResponse.data[0].url;
+                            console.log(imageurl); // Log the URL
+                            arraySavebox[i].querySelector('.box-content').innerHTML += `<img src="${imageurl}" alt="Image description" />`;
+                        } else {
+                            console.log('dalleResponse.data is undefined');
+                        }
+                        
+                        arraySavebox[i].querySelector('.box-content').innerHTML += response + '<br>';
+                        // Display the recipe steps with images in the same box
+                        await displayRecipeWithImages(instructionsArray, arraySavebox[i]);
+                        checkForText(); // call the function here
+
+                        // Store the entire HTML content of the box in the local storage
+                        localStorage.setItem(`box${i}`, arraySavebox[i].innerHTML);
+                    }
+
+                    i++;
+                    if (i >= arraySavebox.length) {
+                        i = 0; // Reset counter
+                    }
+                }
+            }
+        }
+
+        async function displayRecipeWithImages(instructionsArray, box) {
+            for (let i = 1; i < instructionsArray.length; i++) {
+                const step = instructionsArray[i];
+                const dalleResponseSteps = await dalle(step); // Assuming dalle() is the function that returns DALL-E image URL
+                const imageURL = dalleResponseSteps.data[0].url;
+
+                // Create a div for each step and display the step text and its corresponding image
+                const stepDiv = document.createElement('div');
+                stepDiv.innerHTML = `<p><strong>Step ${i}:</strong> ${step}</p>`;
+                stepDiv.innerHTML += `<img src="${imageURL}" alt="Step ${i} Image" />`;
+
+                box.querySelector('.box-content').appendChild(stepDiv);
+            }
+        }
+                
+        function sendUserMessage(message) {
+            const chatLog = document.getElementById('messages');
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('chat-message', 'user-message');
+            userMessage.textContent = message;
+            chatLog.appendChild(userMessage); // Insert new user message at the bottom
+        }
+
+        function sendBotMessage(message) {
+            const chatLog = document.getElementById('messages');
+            const botMessage = document.createElement('div');
+            botMessage.classList.add('chat-message', 'bot-message');
+            botMessage.textContent = message;
+            chatLog.appendChild(botMessage); // Insert new bot message at the bottom
+        }
+    
+
+        function showTypingAnimation() {
+            const chatLog = document.getElementById('messages');
+            const typingAnimation = document.createElement('div');
+            typingAnimation.classList.add('chat-message', 'typing-animation');
+            chatLog.appendChild(typingAnimation); // Insert typing animation at the bottom
+
+            setTimeout(function () {
+                chatLog.removeChild(typingAnimation);
+            }, 1500); // Set the delay to control the duration of the animation (milliseconds)
+        }
+
+        async function getGptResponse(prompt) {
+            const user_message = [
+                // Content field contains a prompt engineered text that tells OpenAI how to split up its responses for each node
+                { "role": "user", "content": `Give me no other text except a recipe with ingredients and instructions (in maximum 5 steps) that contains all of the following ingredients: ${prompt}` },
+            ];
+
+            const headers = {
+                'Authorization': `Bearer API KEY`,
+                'Content-Type': 'application/json',
+            };
+
+            const api_endpoint = 'https://api.openai.com/v1/chat/completions';
+
+            // Show typing animation before sending the user's message
+            showTypingAnimation();
+
+            const response_openai = await fetch(api_endpoint, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({ messages: user_message, model: "gpt-3.5-turbo" }),
+            });
+            const openai_json = await response_openai.json();
+            console.log(openai_json)
+            return openai_json.choices[0].message.content;
+        }
+
+        async function dalle(recipe) {
+            const apikey = `API KEY`; // Use environment variable for API key
+            const apiurl = 'https://api.openai.com/v1/images/generations';
+            const body = {
+                prompt: recipe,
+                size: "256x256" // Correct format for size parameter
+            }
+            const headers = {
+                'Authorization': `Bearer ${apikey}`,
+                'Content-Type': 'application/json',
+            };
+
+            try {
+                const response = await fetch(apiurl, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(body),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error('Response data:', data);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                console.log(data);
+                return data; // Added return statement to return the data from the function
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+}
+
+
+    </script>
+</body>
+</html>
